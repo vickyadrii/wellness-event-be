@@ -6,16 +6,16 @@ const Statuses = ["Pending", "Approved", "Rejected"];
 
 const EventSchema = new Schema(
   {
-    eventName: { type: String, required: true },
-    companyName: { type: String, required: true },
-    proposedDates: { type: [Date], required: true },
+    event_name: { type: String, required: true },
+    company_name: { type: String, required: true },
+    proposed_dates: { type: [Date], required: true },
     location: { type: String, required: true },
-    eventId: { type: String, required: true },
-    dateCreated: { type: Date, default: Date.now },
+    event_id: { type: String, required: true },
+    date_created: { type: Date, default: Date.now },
     status: { type: String, enum: Statuses, default: "Pending" },
     remarks: { type: String, default: null },
-    confirmedDate: { type: Date, default: null },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
+    confirmed_date: { type: Date, default: null },
+    created_by: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
   },
   {
     timestamps: true,
