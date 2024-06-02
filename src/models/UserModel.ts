@@ -6,7 +6,7 @@ const Roles = ["HR", "VENDOR"];
 
 const UserSchema = new Schema(
   {
-    username: { type: String, required: [true, "Username is required!"] },
+    username: { type: String, required: [true, "Username is required!"], unique: true },
     password: { type: String, required: [true, "Password is required!"] },
     role: { type: String, enum: Roles, required: true },
     company_name: { type: String, required: false, default: null },

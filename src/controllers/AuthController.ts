@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import User from "@/models/UserModel";
 import { Request, Response } from "express";
 import mongoose from "mongoose";
-import { generateToken } from "@/lib/jwt";
+import { generateToken } from "@/utils/token";
 
 export const createUser = async (req: Request, res: Response) => {
   const { username, password, role, company_name, vendor_name } = req.body;
@@ -27,15 +27,20 @@ export const createUser = async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      console.log(error.message);
-      res.json({
+      return res.json({
         message: error.message,
         data: null,
       });
+    } else if (error instanceof Error && error.message.includes("E11000 duplicate key error")) {
+      return res.status(400).json({
+        code: 400,
+        message: "Username already exists",
+        data: null,
+      });
     } else {
-      console.log(error);
-      res.json({
-        message: "Oops something wrong!",
+      return res.status(500).json({
+        code: 500,
+        message: "Oops something went wrong!",
         data: null,
       });
     }
@@ -67,9 +72,9 @@ export const loginUser = async (req: Request, res: Response) => {
       });
     }
 
-    const passwordMatched = await bcrypt.compare(password, user.password);
+    const passwordIsMatch = await bcrypt.compare(password, user.password);
 
-    if (!passwordMatched) {
+    if (!passwordIsMatch) {
       res.status(404).json({
         code: 400,
         data: null,
