@@ -50,6 +50,42 @@ export const getEventsService = async (response: ResponseJSON) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getEventByIdService = async (params: any, response: ResponseJSON) => {
+  const { id } = params;
+
+  try {
+    const event = await Event.findById(id).populate("created_by", "username");
+    if (!event) {
+      return response({
+        code: 404,
+        message: "Event not found!",
+        data: null,
+      });
+    }
+
+    response({
+      code: 200,
+      message: "Get event successfully!",
+      data: event,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      return response({
+        code: 400,
+        message: error.message,
+        data: null,
+      });
+    } else {
+      return response({
+        code: 500,
+        message: "Oops, something wrong!",
+        data: null,
+      });
+    }
+  }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const updateEventService = async (params: any, payload: EventType, response: ResponseJSON) => {
   const { id } = params;
   const { event_name, company_name, proposed_dates, location, status, remarks, confirmed_date } = payload;
