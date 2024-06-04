@@ -45,10 +45,6 @@ Make sure you have installed the following prerequisites before proceeding:
    MONGODB_OPTIONS="retryWrites=true&w=majority&appName=wellness-event-cluster"
    ````
 
-3. Run migrations to initialize the database schema:
-
-   ```npx prisma migrate dev --name init```
-
 ## Usage
 
 Start the Express server:
